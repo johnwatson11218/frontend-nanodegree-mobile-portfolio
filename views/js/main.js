@@ -354,7 +354,7 @@ var makeRandomPizza = function() {
 
   pizza = pizza + ingredientItemizer(selectRandomSauce());
   pizza = pizza + ingredientItemizer(selectRandomCrust());
-
+  //console.log( pizza );
   return pizza;
 };
 
@@ -423,6 +423,7 @@ var resizePizzas = function(size) {
 
   // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
   function determineDx (elem, size) {
+    console.log( 'calling function');
     var oldwidth = elem.offsetWidth;
     var windowwidth = document.querySelector("#randomPizzas").offsetWidth;
     var oldsize = oldwidth / windowwidth;
@@ -450,11 +451,38 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
-    for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
-      var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
-      var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
-      document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
+    var w = -1;
+    if( cache.hasOwnProperty[size]){
+      w = cache[size];
+    } else {
+      var elements = document.querySelectorAll(".randomPizzaContainer");  
+      var first = elements[0];
+      var dx = determineDx(first, size);
+      cache[size] = (first.offsetWidth + dx) + 'px';
     }
+
+    var elements = document.querySelectorAll(".randomPizzaContainer");
+    var newSize = cache[size];
+    for( var i = 0; i < elements.length; i++ ){
+      elements[i].style.width = newSize;
+    }
+    
+    /*
+    
+    for (var i = 0; i < elements.length; i++) {
+      var e = elements[i];
+      
+      if( cache.hasOwnProperty( key )){
+        e.style.width = e[key];
+      } else {
+        
+        var dx = determineDx(e, size);
+        var newwidth = (e.offsetWidth + dx) + 'px';
+        e.style.width = newwidth;
+        e[key] = newwidth;        
+      }
+    }
+    */  
   }
 
   changePizzaSizes(size);
@@ -465,6 +493,8 @@ var resizePizzas = function(size) {
   var timeToResize = window.performance.getEntriesByName("measure_pizza_resize");
   console.log("Time to resize pizzas: " + timeToResize[0].duration + "ms");
 };
+
+var cache = {};
 
 window.performance.mark("mark_start_generating"); // collect timing data
 
