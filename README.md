@@ -1,3 +1,25 @@
+
+##What I changed to complete this assignment. 
+
+1. I create a gh-pages branch of my cloned repo so I could easily host this site and run it through google page speed insights
+2. I submitted the link to google page insights to see where the problems were. 
+* the biggest issue there was the image optimization
+* I also delete several scripts that did not appear to be needed. 
+* I also inclined some of the css and added async tags to get my score above 90 on both desktop and mobile
+
+3. Then I worked on getting the framerate to stay above 60 fps on the page with the scrolling pizzas. 
+	I first reduced the number of pizzas so that it wasn't drawing a bunch offscreen.
+   The main issue there turned out to be using a different way of moving the pizza div other that setting its position with css .left property, I used 
+   	a css transform. I had also played around with a cache of the value that I needed to use but the css transform made all the difference. 
+
+4. Then I worked on getting the resize under 5ms. I changed the code to only query for the set of divs one time and that helped a bit. The big improvement came
+when I realized that the code was calculating the same number for each node every time the slider changed position. I stored that number in a cache and then set it on all the nodes
+when the slider is changed. 
+
+
+-------------- original file below ---------------------------
+
+
 ## Website Performance Optimization portfolio project
 
 Your challenge, if you wish to accept it (and we sure hope you will), is to optimize this online portfolio for speed! In particular, optimize the critical rendering path and make this page render as quickly as possible by applying the techniques you've picked up in the [Critical Rendering Path course](https://www.udacity.com/course/ud884).
